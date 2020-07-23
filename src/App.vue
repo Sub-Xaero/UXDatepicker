@@ -217,22 +217,27 @@
       let monthName = (monthNumber: number) => {
         return enGB.localize!.month(monthNumber - 1, {});
       };
+
       let setDayMode = () => {
         mode.value = "d";
         open.value = true;
       };
+
       let setMonthMode = () => {
         mode.value = "m";
         open.value = true;
       };
+
       let setYearMode = () => {
         mode.value = "y";
         open.value = true;
       };
+
       let setDecadeMode = () => {
         mode.value = "dec";
         open.value = true;
       };
+
       let pickDecade = (newDecade: number) => {
         if (newDecade < minDecade || newDecade > maxDecade) {
           return;
@@ -240,10 +245,12 @@
         decade.value = newDecade;
         setYearMode();
       };
+
       let pickYear = (newYear: number) => {
         year.value = newYear;
         setMonthMode();
       };
+
       let pickMonth = (newMonth: number) => {
         month.value = newMonth;
         setDayMode();
@@ -284,10 +291,12 @@
         decadePage,
         dateChosen,
         date,
+        // Computed
         decadeOptions,
         yearOptions,
         monthOptions,
         dayOptions,
+        // Methods
         ordinalizeNumber,
         monthName,
         setDayMode,
