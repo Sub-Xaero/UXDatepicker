@@ -24,8 +24,10 @@
       <div v-if="mode === 'dec'">
         <h5 class="action-text">Pick a decade</h5>
         <div class="option-wrapper decade">
-          <div :class="['option', (i < minDecade || i > maxDecade ? 'disabled' : ''), (decade === i ? 'active' : '')]" :key="i" @click="pickDecade(i)" v-for="i in decadeOptions">
-            {{i}}'s
+          <div :key="century" class="option-group" v-for="(decades, century) in decadeOptionsByCentury">
+            <div :class="['option', (i < minDecade || i > maxDecade ? 'disabled' : ''), (decade === i ? 'active' : '')]" :key="i" @click="pickDecade(i)" v-for="i in decades">
+              {{i}}'s
+            </div>
           </div>
 
         </div>
@@ -100,6 +102,17 @@
           arr.push(i);
         }
         return arr;
+      });
+      let decadeOptionsByCentury = computed(() => {
+        return decadeOptions.value.reduce(
+          (accumulator: { [i: number]: number[] }, decadeYear: number) => {
+            let century = Math.floor(decadeYear / 100) + 1;
+            accumulator[century] = accumulator[century] || [];
+            accumulator[century].push(decadeYear);
+            return accumulator;
+          },
+          {},
+        );
       });
       let yearOptions = computed(() => {
         let arr: number[] = [];
@@ -209,6 +222,7 @@
         date,
         // Computed
         decadeOptions,
+        decadeOptionsByCentury,
         yearOptions,
         monthOptions,
         dayOptions,
@@ -323,7 +337,12 @@
         @apply text-lg;
       }
 
-      .option-wrapper {
+      .option-group {
+        flex-basis: 100%;
+        @apply mb-4;
+      }
+
+      .option-wrapper, .option-group {
         @apply mb-8;
         @apply flex flex-wrap content-center justify-center text-center;
 
