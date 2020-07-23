@@ -179,7 +179,7 @@
           return "";
         }
 
-        return new Date(year.value!, month.value!, day.value!);
+        return new Date(year.value, month.value, day.value || undefined);
       });
       let decadeOptions = computed(() => {
         let arr = [];
@@ -190,7 +190,10 @@
       });
       let yearOptions = computed(() => {
         let arr: number[] = [];
-        for (let i = decade.value!; i <= decade.value! + 9; i++) {
+        if (decade.value == null) {
+          return arr;
+        }
+        for (let i = decade.value; i <= decade.value + 9; i++) {
           arr.push(i);
         }
         return arr;
@@ -255,8 +258,8 @@
         month.value = newMonth;
         setDayMode();
 
-        let daysInSelectedMonth = getDaysInMonth(new Date(year.value!, month.value - 1));
-        if (day.value !== null && daysInSelectedMonth < day.value!) {
+        let daysInSelectedMonth = getDaysInMonth(new Date(year.value!, month.value! - 1));
+        if (day.value !== null && daysInSelectedMonth < day.value) {
           day.value = null;
         }
       };
