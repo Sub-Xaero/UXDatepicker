@@ -315,12 +315,12 @@
       minDecade: {
         type: Number,
         required: false,
-        default: 1400,
+        default: 400,
       },
       maxDecade: {
         type: Number,
         required: false,
-        default: 2200,
+        default: Number.POSITIVE_INFINITY,
       },
     },
   });
