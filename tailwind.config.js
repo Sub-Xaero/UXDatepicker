@@ -1,4 +1,7 @@
 module.exports = {
+  purge: [
+    './**/*.vue'
+  ],
   theme: {
     colors: {
       "transparent": "transparent",
