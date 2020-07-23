@@ -164,7 +164,7 @@
       let year: Ref<number | null> = ref(null);
 
       let decade: Ref<number | null> = ref(null);
-      let decadePage = ref(1820);
+      let decadePage = ref(new Date().getFullYear() - 200);
 
       let {minDecade, maxDecade} = props;
 
