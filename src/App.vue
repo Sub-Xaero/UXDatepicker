@@ -38,6 +38,8 @@
         <div class="option-wrapper year">
           <div :class="['option', (year === i ? 'active' : '')]" :key="i" @click="pickYear(i)" v-for="i in yearOptions">{{i}}</div>
         </div>
+        <hr/>
+        <span @click="setDecadeMode()" class="button">Back</span>
       </div>
       <div v-if="mode === 'm'">
         <h5 class="action-text">Pick a month</h5>
