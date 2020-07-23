@@ -1,147 +1,58 @@
 <template>
-  <div class="date-picker text-center border-2 border-blue-900 bg-white">
+  <div class="date-picker">
     <input :value=" dateChosen ? `${year}-${month}-${day}` : ''" type="hidden">
-    <div @click="!open ? setDecadeMode() : false" class=" bg-blue-200 blue-200-contrast p-2 cursor-pointer rounded shadow;">
+    <div @click="!open ? setDecadeMode() : false" class="date-header">
       <div v-if="!dateChosen && !open">
-        <p class="marginless">Click here to pick a date</p>
+        <p class="action-text">Click here to pick a date</p>
         <hr/>
       </div>
       <div>
-        <span :class="[
-          'date-header-item font-bold cursor-pointer rounded border-2 border-blue-900 py-1 px-3 md:m-1 inline-flex',
-          'hover:bg-blue-900 hover:border-2 hover:border-blue-300',
-          (open && (mode === 'y' || mode === 'dec') ? 'active' : '' )
-          ]"
-              @click="setDecadeMode()">
-          {{ year || "Year" }}
-        </span>
-
-        <span class="font-bold py-1 px-3 md:m-1">-</span>
-
-        <span :class="[
-          'date-header-item font-bold cursor-pointer rounded border-2 border-blue-900 py-1 px-3 md:m-1 inline-flex',
-          (!year ? '' : 'hover:bg-blue-900 hover:border-2 hover:border-blue-300'),
-          (open && (mode === 'm') ? 'active' : '' )
-          ]"
-              @click="!year ? setDecadeMode() : setMonthMode()">
-          {{ month ? monthName(month) : "Month" }}
-        </span>
-
-        <span class="font-bold py-1 px-3 md:m-1">-</span>
-        <span :class="[
-          'date-header-item font-bold cursor-pointer rounded border-2 border-blue-900 py-1 px-3 md:m-1 inline-flex',
-          (!year || !month ? '' : 'hover:bg-blue-900 hover:border-2 hover:border-blue-300'),
-          (open && (mode === 'd') ? 'active' : '' )
-          ]"
-              @click="!year || !month ? setDecadeMode() : setDayMode()">
-          {{ day ? ordinalizeNumber(day) : "Day" }}
-        </span>
+        <span :class="['date-header-item', 'enabled', (open && (mode === 'y' || mode === 'dec') ? 'active' : '' ) ]" @click="setDecadeMode()">{{ year || "Year" }}</span>
+        <span class="date-header-item-separator">-</span>
+        <span :class="['date-header-item', (!year ? '' : 'enabled'), (open && (mode === 'm') ? 'active' : '' ) ]" @click="!year ? setDecadeMode() : setMonthMode()">{{ month ? monthName(month) :
+          "Month" }}</span>
+        <span class="date-header-item-separator">-</span>
+        <span :class="['date-header-item', (!year || !month ? '' : 'enabled'), (open && (mode === 'd') ? 'active' : '' ) ]" @click="!year || !month ? setDecadeMode() : setDayMode()">{{ day ?
+          ordinalizeNumber(day) : "Day" }}</span>
       </div>
       <div v-if="dateChosen && !open">
         <hr class="mb-1 mt-1"/>
-        <p class="marginless">Click to change</p>
+        <p class="action-text">Click to change</p>
       </div>
     </div>
-    <div
-      :class="[
-        'date-panel border-t-2 border-blue-900 p-1 rounded shadow',
-        ]"
-      v-if="open"
-    >
+    <div class="date-panel" v-if="open">
       <div v-if="mode === 'dec'">
-        <h5 class="text-lg font-bold">Pick a decade</h5>
-        <div
-          :class="[
-          'option-wrapper flex flex-wrap content-center justify-center text-center',
-           'decade'
-           ]"
-        >
-          <div
-            :class="[
-            'option select-none m-1 p-1 border-2 border-green-500 bg-green-200 text-green-200-contrast rounded cursor-pointer',
-            'hover:border-2 hover:border-blue-900 hover:bg-white hover:text-white-contrast ',
-            (decade === i ? 'active border-2 border-blue-900 bg-white text-white-contrast' : ''),,
-            (i < minDecade || i > maxDecade ? 'disabled cursor-default border-2 border-grey-200 bg-grey-200 text-grey-200-contrast' : ''),
-            ]"
-            :key="i"
-            @click="pickDecade(i)"
-            v-for="i in decadeOptions"
-          >
+        <h5 class="action-text">Pick a decade</h5>
+        <div class="option-wrapper decade">
+          <div :class="['option', (i < minDecade || i > maxDecade ? 'disabled' : ''), (decade === i ? 'active' : '')]" :key="i" @click="pickDecade(i)" v-for="i in decadeOptions">
             {{i}}'s
           </div>
+
         </div>
         <hr/>
-        <span @click="prevDecadePage()" class="rounded bg-blue-900 text-blue-900-contrast inline-block p-2 m-1 hover:bg-blue-400 hover:text-blue-400-contrast">Prev</span>
-        <span @click="nextDecadePage()" class="rounded bg-blue-900 text-blue-900-contrast inline-block p-2 m-1 hover:bg-blue-400 hover:text-blue-400-contrast">Next</span>
+        <span @click="prevDecadePage()" class="button">Prev</span>
+        <span @click="nextDecadePage()" class="button">Next</span>
       </div>
       <div v-if="mode === 'y'">
-        <h5 class="text-lg font-bold">Pick a year</h5>
-        <div
-          :class="[
-          'option-wrapper flex flex-wrap content-center justify-center text-center',
-           'year',
-           ]"
-        >
-          <div
-            :class="[
-            'option select-none m-1 p-1 border-2 border-green-500 bg-green-200 text-green-200-contrast rounded cursor-pointer',
-            'hover:border-2 hover:border-blue-900 hover:bg-white hover:text-white-contrast ',
-            (year === i ? 'active border-2 border-blue-900 bg-white text-white-contrast' : ''),
-            ]"
-            :key="i"
-            @click="pickYear(i)"
-            v-for="i in yearOptions"
-          >
-            {{i}}
-          </div>
+        <h5 class="action-text">Pick a year</h5>
+        <div class="option-wrapper year">
+          <div :class="['option', (year === i ? 'active' : '')]" :key="i" @click="pickYear(i)" v-for="i in yearOptions">{{i}}</div>
         </div>
       </div>
       <div v-if="mode === 'm'">
-        <h5 class="text-lg font-bold">Pick a month</h5>
-        <div
-          :class="[
-          'option-wrapper flex flex-wrap content-center justify-center text-center',
-          'month',
-           ]"
-        >
-          <div
-            :class="[
-            'option select-none m-1 p-1 border-2 border-green-500 bg-green-200 text-green-200-contrast rounded cursor-pointer',
-            'hover:border-2 hover:border-blue-900 hover:bg-white hover:text-white-contrast ',
-            (month === i ? 'active border-2 border-blue-900 bg-white text-white-contrast' : ''),
-            ]"
-            :key="i"
-            @click="pickMonth(i)"
-            v-for="i in monthOptions"
-          >
-            {{monthName(i)}}
-          </div>
+        <h5 class="action-text">Pick a month</h5>
+        <div class="option-wrapper month">
+          <div :class="['option', (month === i ? 'active' : '')]" :key="i" @click="pickMonth(i)" v-for="i in monthOptions">{{monthName(i)}}</div>
         </div>
       </div>
       <div v-if="mode === 'd'">
-        <h5 class="text-lg font-bold">Pick a day</h5>
-        <div
-          :class="[
-          'option-wrapper flex flex-wrap content-center justify-center text-center',
-          'day',
-         ]"
-        >
-          <div
-            :class="[
-              'option select-none m-1 p-1 border-2 border-green-500 bg-green-200 text-green-200-contrast rounded cursor-pointer',
-              'hover:border-2 hover:border-blue-900 hover:bg-white hover:text-white-contrast ',
-              (day === i ? 'active border-2 border-blue-900 bg-white text-white-contrast' : ''),
-              ]"
-            :key="i"
-            @click="pickDay(i)"
-            v-for="i in dayOptions"
-          >
-            {{ordinalizeNumber(i)}}
-          </div>
+        <h5 class="action-text">Pick a day</h5>
+        <div class="option-wrapper day">
+          <div :class="['option', (day === i ? 'active' : '')]" :key="i" @click="pickDay(i)" v-for="i in dayOptions">{{ordinalizeNumber(i)}}</div>
         </div>
       </div>
       <hr/>
-      <span @click="open = false" class="rounded bg-blue-900 text-blue-900-contrast inline-block p-2 m-1 hover:bg-blue-400 hover:text-blue-400-contrast">
+      <span @click="open = false" class="button">
         {{dateChosen ? "Done" : "Close"}}
       </span>
     </div>
@@ -331,9 +242,88 @@
 
 <style lang="postcss">
 
+  .button {
+    @apply bg-green-700 text-green-700-contrast;
+    @apply border-2 border-solid border-green-700;
+    @apply rounded-lg;
+    @apply p-2;
+    @apply m-2;
+    @apply inline-block;
+
+    &:hover {
+      @apply bg-green-200 text-green-200-contrast;
+      @apply border-2 border-solid border-green-700;
+    }
+  }
+
   .date-picker {
+    @apply text-center bg-white;
+
+    hr {
+      @apply mt-2 mb-2;
+    }
+
+    .date-header {
+      @apply rounded-sm shadow cursor-pointer p-2 bg-green-200 text-green-200-contrast;
+      @apply border-b-2 border-solid border-green-500;
+
+      .action-text {
+        @apply inline-block;
+        @apply p-1;
+        @apply font-semibold;
+        @apply rounded border-2 border-solid border-transparent;
+
+        &:hover {
+          @apply bg-green-300 text-green-300-contrast;
+          @apply border-2 border-solid border-green-700;
+        }
+      }
+
+      .date-header-item-separator {
+        @apply font-bold ;
+        @apply px-1 py-2;
+
+        @screen md {
+          @apply m-2;
+        }
+      }
+
+      .date-header-item {
+        @apply font-bold;
+        @apply cursor-pointer;
+        @apply rounded;
+        @apply border-2 border-solid border-green-900;
+        @apply inline-block;
+        @apply text-center;
+        @apply px-2 py-1;
+
+        &.enabled:hover {
+          @apply bg-green-400 text-green-400-contrast;
+          @apply border-2 border-solid border-green-900;
+        }
+
+        &.active {
+          @apply bg-green-900 text-green-900-contrast;
+        }
+
+      }
+    }
+
     .date-panel {
+      @apply p-2;
+      @apply rounded-sm;
+      @apply shadow;
+
+      .action-text {
+        @apply font-bold;
+        @apply mt-4;
+        @apply mb-4;
+        @apply text-lg;
+      }
+
       .option-wrapper {
+        @apply mb-8;
+        @apply flex flex-wrap content-center justify-center text-center;
 
         &.decade {
           .option {
@@ -341,7 +331,7 @@
               flex-basis: 45%;
             }
             @screen md {
-              flex-basis: 10%;
+              flex-basis: 17%;
             }
           }
         }
@@ -374,6 +364,26 @@
           }
         }
 
+        .option {
+          @apply select-none;
+          @apply m-1;
+          @apply p-1;
+          @apply border-2 border-solid border-green-500;
+          @apply bg-green-200 text-green-200-contrast;
+          @apply rounded;
+          @apply cursor-pointer;
+
+          &.disabled {
+            @apply cursor-default;
+            @apply border-2 border-solid border-green-300;
+            @apply bg-grey-200 text-green-200-contrast;
+          }
+
+          &:hover:not(.disabled), &.active {
+            /*border: 2px solid palette(brevio, dark-green);*/
+            @apply bg-white text-white-contrast;
+          }
+        }
       }
     }
   }
