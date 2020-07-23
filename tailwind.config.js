@@ -4,6 +4,8 @@ module.exports = {
       "transparent": "transparent",
       "black": "#000000",
       "white": "#ffffff",
+      "black-contrast": "#000000",
+      "white-contrast": "black",
       "red": {
         "50": "#ffebee",
         "100": "#ffcdd2",
