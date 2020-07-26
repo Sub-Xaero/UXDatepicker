@@ -1,6 +1,6 @@
 <template>
   <div class="date-picker green">
-    <input :value=" dateChosen ? `${year}-${month}-${day}` : ''" type="hidden">
+    <input :name="name" :value=" dateChosen ? `${year}-${month}-${day}` : ''" type="hidden">
     <div @click="!open ? setDecadeMode() : false" class="date-header">
       <div v-if="!dateChosen && !open">
         <p class="action-text">Click here to pick a date</p>
@@ -243,6 +243,10 @@
       };
     },
     props: {
+      name: {
+        type: String,
+        required: true,
+      },
       minDecade: {
         type: Number,
         required: false,
