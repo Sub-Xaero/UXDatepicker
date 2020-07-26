@@ -1,5 +1,5 @@
 <template>
-  <div class="date-picker">
+  <div class="date-picker green">
     <input :value=" dateChosen ? `${year}-${month}-${day}` : ''" type="hidden">
     <div @click="!open ? setDecadeMode() : false" class="date-header">
       <div v-if="!dateChosen && !open">
@@ -86,6 +86,7 @@
       let dateChosen = computed(() => {
         return !!year.value && !!month.value && !!day.value;
       });
+
       let date = computed(() => {
         if (year.value == null) {
           return "";
@@ -258,20 +259,6 @@
 
 <style lang="postcss">
 
-  .button {
-    @apply bg-green-700 text-green-700-contrast;
-    @apply border-2 border-solid border-green-700;
-    @apply rounded-lg;
-    @apply p-2;
-    @apply m-2;
-    @apply inline-block;
-
-    &:hover {
-      @apply bg-green-200 text-green-200-contrast;
-      @apply border-2 border-solid border-green-700;
-    }
-  }
-
   .date-picker {
     @apply text-center bg-white;
 
@@ -279,9 +266,22 @@
       @apply mt-2 mb-2;
     }
 
+    .button {
+      @apply border-2 border-solid;
+      @apply rounded-lg;
+      @apply p-2 m-2;
+      @apply inline-block;
+      @apply cursor-pointer;
+      @apply select-none;
+
+      &:hover {
+        @apply border-2 border-solid;
+      }
+    }
+
     .date-header {
-      @apply rounded-sm shadow cursor-pointer p-2 bg-green-200 text-green-200-contrast;
-      @apply border-b-2 border-solid border-green-500;
+      @apply rounded-sm shadow cursor-pointer p-2;
+      @apply border-b-2 border-solid;
 
       .action-text {
         @apply inline-block;
@@ -290,14 +290,14 @@
         @apply rounded border-2 border-solid border-transparent;
 
         &:hover {
-          @apply bg-green-300 text-green-300-contrast;
-          @apply border-2 border-solid border-green-700;
+          @apply border-2 border-solid;
         }
       }
 
       .date-header-item-separator {
         @apply font-bold ;
         @apply px-1 py-2;
+        @apply cursor-default;
 
         @screen md {
           @apply m-2;
@@ -308,18 +308,27 @@
         @apply font-bold;
         @apply cursor-pointer;
         @apply rounded;
-        @apply border-2 border-solid border-green-900;
+        @apply border-2 border-solid;
         @apply inline-block;
         @apply text-center;
         @apply px-2 py-1;
 
-        &.enabled:hover {
-          @apply bg-green-400 text-green-400-contrast;
-          @apply border-2 border-solid border-green-900;
+        &:hover {
+          @apply bg-grey-400 text-grey-400-contrast;
+          @apply border-2 border-solid;
+        }
+
+        &.enabled {
+          @apply border-2 border-solid;
+
+          &:hover {
+            @apply bg-white text-white-contrast;
+            @apply border-2 border-solid;
+          }
         }
 
         &.active {
-          @apply bg-green-900 text-green-900-contrast;
+          @apply bg-white text-white-contrast;
         }
 
       }
@@ -389,20 +398,226 @@
           @apply select-none;
           @apply m-1;
           @apply p-1;
-          @apply border-2 border-solid border-green-500;
-          @apply bg-green-200 text-green-200-contrast;
+          @apply border-2 border-solid;
           @apply rounded;
           @apply cursor-pointer;
 
           &.disabled {
             @apply cursor-default;
-            @apply border-2 border-solid border-green-300;
-            @apply bg-grey-200 text-green-200-contrast;
+            @apply border-2 border-solid ;
+            @apply bg-grey-200 text-grey-200-contrast ;
           }
 
           &:hover:not(.disabled), &.active {
-            /*border: 2px solid palette(brevio, dark-green);*/
             @apply bg-white text-white-contrast;
+          }
+        }
+      }
+    }
+
+    &.pink {
+      .button {
+        @apply bg-pink-700 text-pink-700-contrast border-pink-700;
+
+        &:hover {
+          @apply bg-pink-200 text-pink-200-contrast border-pink-700;
+        }
+      }
+
+      .date-header {
+        @apply bg-pink-200 text-pink-200-contrast border-pink-500;
+
+        .action-text {
+          &:hover {
+            @apply bg-pink-300 text-pink-300-contrast border-pink-700;
+          }
+        }
+      }
+
+      .date-header-item {
+        @apply bg-pink-700 text-pink-700-contrast border-pink-700;
+
+        &:hover {
+          @apply border-pink-700;
+        }
+
+        &.enabled {
+          @apply bg-pink-700 text-pink-700-contrast border-pink-700;
+
+          &:hover {
+            @apply border-pink-700;
+          }
+        }
+
+        &.active {
+          @apply bg-pink-700 text-pink-700-contrast;
+        }
+      }
+
+      .date-panel {
+        .option-wrapper, .option-group {
+          .option {
+            @apply bg-pink-200 text-pink-200-contrast border-pink-500;
+
+            &.disabled {
+              @apply border-pink-300;
+            }
+          }
+        }
+      }
+    }
+
+    &.blue {
+      .button {
+        @apply bg-blue-700 text-blue-700-contrast border-blue-700;
+
+        &:hover {
+          @apply bg-blue-200 text-blue-200-contrast border-blue-700;
+        }
+      }
+
+      .date-header {
+        @apply bg-blue-200 text-blue-200-contrast border-blue-500;
+
+        .action-text {
+          &:hover {
+            @apply bg-blue-300 text-blue-300-contrast border-blue-700;
+          }
+        }
+      }
+
+      .date-header-item {
+        @apply bg-blue-700 text-blue-700-contrast border-blue-700;
+
+        &:hover {
+          @apply border-blue-700;
+        }
+
+        &.enabled {
+          @apply bg-blue-700 text-blue-700-contrast border-blue-700;
+
+          &:hover {
+            @apply border-blue-700;
+          }
+        }
+
+        &.active {
+          @apply bg-blue-700 text-blue-700-contrast;
+        }
+      }
+
+      .date-panel {
+        .option-wrapper, .option-group {
+          .option {
+            @apply bg-blue-200 text-blue-200-contrast border-blue-500;
+
+            &.disabled {
+              @apply border-blue-300;
+            }
+          }
+        }
+      }
+    }
+
+    &.green {
+      .button {
+        @apply bg-green-700 text-green-700-contrast border-green-700;
+
+        &:hover {
+          @apply bg-green-200 text-green-200-contrast border-green-700;
+        }
+      }
+
+      .date-header {
+        @apply bg-green-200 text-green-200-contrast border-green-500;
+
+        .action-text {
+          &:hover {
+            @apply bg-green-300 text-green-300-contrast border-green-700;
+          }
+        }
+      }
+
+      .date-header-item {
+        @apply bg-green-700 text-green-700-contrast border-green-700;
+
+        &:hover {
+          @apply border-green-700;
+        }
+
+        &.enabled {
+          @apply bg-green-700 text-green-700-contrast border-green-700;
+
+          &:hover {
+            @apply border-green-700;
+          }
+        }
+
+        &.active {
+          @apply bg-green-700 text-green-700-contrast;
+        }
+      }
+
+      .date-panel {
+        .option-wrapper, .option-group {
+          .option {
+            @apply bg-green-200 text-green-200-contrast border-green-500;
+
+            &.disabled {
+              @apply border-green-300;
+            }
+          }
+        }
+      }
+    }
+
+    &.amber {
+      .button {
+        @apply bg-amber-700 text-amber-700-contrast border-amber-700;
+
+        &:hover {
+          @apply bg-amber-200 text-amber-200-contrast border-amber-700;
+        }
+      }
+
+      .date-header {
+        @apply bg-amber-200 text-amber-200-contrast border-amber-500;
+
+        .action-text {
+          &:hover {
+            @apply bg-amber-300 text-amber-300-contrast border-amber-700;
+          }
+        }
+      }
+
+      .date-header-item {
+        @apply bg-amber-700 text-amber-700-contrast border-amber-700;
+
+        &:hover {
+          @apply border-amber-700;
+        }
+
+        &.enabled {
+          @apply bg-amber-700 text-amber-700-contrast border-amber-700;
+
+          &:hover {
+            @apply border-amber-700;
+          }
+        }
+
+        &.active {
+          @apply bg-amber-700 text-amber-700-contrast;
+        }
+      }
+
+      .date-panel {
+        .option-wrapper, .option-group {
+          .option {
+            @apply bg-amber-200 text-amber-200-contrast border-amber-500;
+
+            &.disabled {
+              @apply border-amber-300;
+            }
           }
         }
       }
