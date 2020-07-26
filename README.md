@@ -10,3 +10,4 @@ There's a better way. What if you could choose a date consistently using just 5 
 
 Well, now you can.
 
+![UX Datepicker Demo](demo/screencast.gif)
