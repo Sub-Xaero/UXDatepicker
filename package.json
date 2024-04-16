@@ -9,7 +9,7 @@
   "dependencies": {
     "date-fns": "^3.6.0",
     "tailwindcss": "^1.5.2",
-    "vue": "^3.4.21"
+    "vue": "^3.4.22"
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^3.4.21",
